@@ -1,0 +1,12 @@
+test_comparison (test_chatbot.ChatbotTests.test_comparison) ... ok
+test_five_queries_are_documented (test_chatbot.ChatbotTests.test_five_queries_are_documented) ... ok
+test_highest_revenue (test_chatbot.ChatbotTests.test_highest_revenue) ... ok
+test_query_matching_ignores_case_and_extra_spaces (test_chatbot.ChatbotTests.test_query_matching_ignores_case_and_extra_spaces) ... ok
+test_supported_query_returns_microsoft_revenue (test_chatbot.ChatbotTests.test_supported_query_returns_microsoft_revenue) ... ok
+test_tesla_net_income_change (test_chatbot.ChatbotTests.test_tesla_net_income_change) ... ok
+test_unknown_query_is_explicit (test_chatbot.ChatbotTests.test_unknown_query_is_explicit) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.000s
+
+OK

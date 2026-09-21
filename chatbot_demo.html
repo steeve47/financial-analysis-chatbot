@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Analysis Chatbot</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { background: #f4f7fb; margin: 0; padding: 2rem 1rem; color: #172033; }
+    main { max-width: 720px; margin: auto; background: white; border-radius: 14px;
+      box-shadow: 0 8px 30px #1720331a; padding: 1.5rem; }
+    h1 { margin-top: 0; color: #123b6d; }
+    #messages { min-height: 260px; max-height: 420px; overflow-y: auto; border: 1px solid #d9e1ed;
+      border-radius: 10px; padding: 1rem; background: #fbfcfe; }
+    .message { margin: .65rem 0; line-height: 1.45; }
+    .you { color: #123b6d; }
+    .bot { color: #17613b; }
+    form { display: flex; gap: .6rem; margin-top: 1rem; }
+    input { flex: 1; border: 1px solid #b9c7d9; border-radius: 8px; padding: .75rem; font-size: 1rem; }
+    button { border: 0; border-radius: 8px; padding: .75rem 1rem; background: #123b6d; color: white;
+      cursor: pointer; font-weight: 600; }
+    button:hover { background: #0d2d53; }
+    .questions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+    .questions button { background: #e6eef8; color: #123b6d; font-size: .85rem; font-weight: 500; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Financial Analysis Chatbot</h1>
+    <p>Ask one of the predefined FY2023–FY2025 financial questions.</p>
+    <section id="messages" aria-live="polite"></section>
+    <form id="chat-form">
+      <input id="query" aria-label="Your question" placeholder="Type a financial question..." autocomplete="off">
+      <button type="submit">Ask</button>
+    </form>
+    <div class="questions" id="questions"></div>
+  </main>
+  <script>
+    const answers = new Map([
+      ["what was microsoft's revenue in fy2025?", "Microsoft's FY2025 revenue was $281,724 million."],
+      ["how has tesla's net income changed from fy2023 to fy2025?", "Tesla's net income decreased by $11,205 million from FY2023 ($14,999 million) to FY2025 ($3,794 million)."],
+      ["which company had the highest revenue in fy2025?", "Apple had the highest FY2025 revenue at $416,161 million."],
+      ["what was apple's net margin in fy2025?", "Apple's FY2025 net margin was 26.9%."],
+      ["compare fy2025 revenue for apple, microsoft, and tesla.", "FY2025 revenue comparison — Apple: $416,161 million; Microsoft: $281,724 million; Tesla: $94,827 million."]
+    ]);
+    const messages = document.querySelector("#messages");
+    const input = document.querySelector("#query");
+    const normalize = value => value.trim().toLowerCase().replace(/\s+/g, " ");
+    function addMessage(label, text, className) {
+      const item = document.createElement("div");
+      item.className = `message ${className}`;
+      item.textContent = `${label}: ${text}`;
+      messages.appendChild(item);
+      messages.scrollTop = messages.scrollHeight;
+    }
+    function answer(query) {
+      const normalized = normalize(query);
+      if (normalized === "help") {
+        return "Use one of the suggested questions below.";
+      }
+      return answers.get(normalized) ||
+        "Sorry, I can only answer the predefined queries. Try one of the suggestions below.";
+    }
+    document.querySelector("#chat-form").addEventListener("submit", event => {
+      event.preventDefault();
+      if (!input.value.trim()) return;
+      const query = input.value;
+      addMessage("You", query, "you");
+      addMessage("Bot", answer(query), "bot");
+      input.value = "";
+      input.focus();
+    });
+    for (const query of answers.keys()) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = query;
+      button.addEventListener("click", () => {
+        input.value = query;
+        input.focus();
+      });
+      document.querySelector("#questions").appendChild(button);
+    }
+    addMessage("Bot", "Ready. Choose a suggested question or type your own.", "bot");
+  </script>
+</body>
+</html>
